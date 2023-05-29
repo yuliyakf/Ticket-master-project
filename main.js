@@ -4,6 +4,7 @@ let cityInput = document.getElementById("cityInput");
 let searchBtn = document.getElementById("searchBtn");
 let cityName = document.querySelector(".cityName");
 let eventContainer=document.getElementById("event-container")
+let cardBtn = document.querySelectorAll("cardButton")
 searchBtn.addEventListener("click", searchFunc);
 
 function searchFunc(){
@@ -15,7 +16,7 @@ function searchFunc(){
 }
 
 function fetchDataEvents(value) {
-    fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=['" + value + "']&size=30&sort=date,desc&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94", {
+    fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=['" + value + "']&size=30&sort=date,asc&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94", {
         method: 'GET',
     })
         .then((res) => res.json())
@@ -26,10 +27,21 @@ function fetchDataEvents(value) {
                 console.log(event);
                 let cardObject = document.createElement('div');
                 cardObject.className = 'card';
-                cardObject.innerHTML = event.name;
+               let address =`${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode}`
+               let date= `${event.dates.start.localDate}, ${event.dates.start.localTime}`
+            
+                cardObject.innerHTML=`<h6>${event.name}</h6><img style="height:60px; object-fit:contain;" src=${event.images[0].url}><p>${date}</p><span>${address}</span>` ;
                 eventContainer.appendChild(cardObject);
+            
+                    let cardBtn = document.createElement('button');
+                    cardBtn.className = 'cardButton';
+                    cardBtn.value = address;
+                    cardObject.appendChild(cardBtn);
+                    console.log(cardBtn.value);                  
+                })
+                
+                //fetchMap()
             });
-        })
 }
 
 // function fetchDataWeather(value){
