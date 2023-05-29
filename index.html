@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Event Tracker</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"/>
+   
+    <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvUSMreJT32LU9jP9Zeet-VYDoEEK0gUI&callback=initMap"></script> -->
+
+</head>
+
+<body>
+    <header class="header">
+        <h1 class="headingFont">Event Tracker</h1>
+    </header>
+
+    <div class="main">
+        <div class="row">
+            <div class="three columns left">
+                <div class="city-search">
+                    <h2 class="headerTwo">Search City Events</h2>
+                    <input type="text" id="cityInput" class="u-full-width" placeholder="Enter city name"><br>
+                    <button class="button-primary" id="searchBtn">Search</button>
+                    <hr>
+                    <div class="historyItems"> <!--all history items go here-->
+                        <!-- <button class="historyBtn">city name</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="nine columns right">
+                <h2 class="headerTwo">Events in </h2><span class="cityName"></span>
+                <div id="event-container"> <!--All event cards go here-->
+                    <div class="card">
+                        <div id="event-info">
+                            <h5 id="event-title"> hi</h5>
+                            <img id="event-photo" class="image" src="./images/Unknown.jpeg" alt=""> 
+                            <p id="date"> hi</p>
+                            <p id="location"> hi</p>
+                            <p id="time"> hi</p>
+                            <p id="temperature"> hi</p> <!--Using weather API-->
+                            <p id="weather-icon"> hi</p> <!--Using weather API-->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div id="event-info">
+                            <h5 id="event-title"></h5>
+                            <img id="event-photo" src="" alt="">
+                            <p id="date"></p>
+                            <p id="location"></p>
+                            <p id="time"></p>
+                            <p id="temperature"></p> <!--Using weather API-->
+                            <p id="weather-icon"></p> <!--Using weather API-->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div id="event-info">
+                            <h5 id="event-title"></h5>
+                            <img id="event-photo" src="" alt="">
+                            <p id="date"></p>
+                            <p id="location"></p>
+                            <p id="time"></p>
+                            <p id="temperature"></p> <!--Using weather API-->
+                            <p id="weather-icon"></p> <!--Using weather API-->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div id="event-info">
+                            <h5 id="event-title"></h5>
+                            <img id="event-photo" src="" alt="">
+                            <p id="date"></p>
+                            <p id="location"></p>
+                            <p id="time"></p>
+                            <p id="temperature"></p> <!--Using weather API-->
+                            <p id="weather-icon"></p> <!--Using weather API-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="./main.js"></script>
+</body>
+</body>
+
+</html>
