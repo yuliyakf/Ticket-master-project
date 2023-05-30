@@ -6,6 +6,7 @@ let cityName = document.querySelector(".cityName");
 let eventContainer = document.getElementById("event-container");
 let historyItems = document.querySelector(".historyItems");
 let eventInfoDiv = document.querySelector(".eventInfoDiv");
+let button = document.querySelectorAll("button")
 
 searchBtn.addEventListener("click", searchFunc);
 
@@ -20,6 +21,7 @@ function searchFunc(){
 //fetches API events from ticketmaster and appends cards dynamically
 function fetchDataEvents(value){
     eventContainer.innerHTML=""
+    
 fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=["+value+"]&size=31&sort=date,asc&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94")
     .then((res)=>res.json())
     .then((data)=>{
@@ -33,33 +35,55 @@ fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=["+value+"]&si
             let date = `${event.dates.start.localDate}, ${event.dates.start.localTime}` //used template literal to loop through data and pull data into card
             let address =`${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode}`
             
-            cardObject.innerHTML= `<h5>${event.name}</h5><img class="image" src=${event.images[0].url}><p>${date}</p><span>${address}</span>`
+            cardObject.innerHTML= `<h5>${event.name}</h5><img class="image" src=${event.images[0].url}><p>${date}</p><p>${address}</p><button class="cardBtn" value="${address}">See on Map</button>`
 
             eventContainer.appendChild(cardObject)
 
-//made card clickable *only blue part*
+             let button;
+             button.forEach(button)
+        eventContainer.addEventListener("click", function(e){
+           eventInfoDiv.innerHTML = ""
+            if(e.target.tagName==="BUTTON"){
+                const button = e.target;
+                if(button.className === "cardBtn"){
 
-    eventContainer.addEventListener("click", function(e){ 
-        if(e.target.tagName==="DIV"){
-            const div = e.target;
-                if(div.className==="card"){
-                    eventInfo();
+                    
+                    eventInfoDiv.innerHTML = `<p>${address}</p>`
+               
+              
                 }
-                }
-            })
+            }
+        })
+        
+
+
+    
         })
     });
 }
+//made card clickable *only blue part*
+// function addTopDiv(){
+//     eventContainer.addEventListener("click", function(e){ 
+        
+//         if(e.target.tagName==="DIV"){
+//             const div = e.target;
+//                 if(div.className==="card"){
+//                    // eventInfo();
+//                 }
+//                 }
+//             });
+          
+            //this appends the child for cardInfo *need to add link to buy ticket and google maps API*
+        //function eventInfo(){
+            
+            
+//             let cardInfo = document.createElement("div")
+//             cardInfo.className="cardInfoStyle"
+//             eventInfoDiv.appendChild(cardInfo)
+//             //}
+//             eventInfoDiv.innerHTML=`<h5>${event.name}</h5><img class="image" src=${event.images[0].url}><p>${date}</p><span>${address}</span>`
+// }
 
-
-
-//this appends the child for cardInfo *need to add link to buy ticket and google maps API*
-function eventInfo(){
-
-let cardInfo = document.createElement("div")
-cardInfo.className="cardInfoStyle"
-eventInfoDiv.appendChild(cardInfo)
-}
 
 
 //function for setting storage
