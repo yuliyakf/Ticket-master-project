@@ -62,3 +62,10 @@
    flex-wrap: wrap;
    justify-content: space-between;
 }
+
+.cardInfoStyle{
+    background-color: orange;
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
+}
