@@ -19,6 +19,7 @@ function searchFunc(){
 
 //fetches API events from ticketmaster and appends cards dynamically
 function fetchDataEvents(value){
+    eventContainer.innerHTML=""
 fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=["+value+"]&size=31&sort=date,asc&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94")
     .then((res)=>res.json())
     .then((data)=>{
@@ -37,6 +38,7 @@ fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=["+value+"]&si
             eventContainer.appendChild(cardObject)
 
 //made card clickable *only blue part*
+
     eventContainer.addEventListener("click", function(e){ 
         if(e.target.tagName==="DIV"){
             const div = e.target;
@@ -48,6 +50,8 @@ fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=["+value+"]&si
         })
     });
 }
+
+
 
 //this appends the child for cardInfo *need to add link to buy ticket and google maps API*
 function eventInfo(){
