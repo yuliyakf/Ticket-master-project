@@ -7,15 +7,50 @@ let eventContainer = document.getElementById("event-container");
 let historyItems = document.querySelector(".historyItems");
 let eventInfoDiv = document.querySelector(".eventInfoDiv");
 let button = document.querySelectorAll("button")
+let geocoder;
+let map;
+
+window.initMap = initialize;
+//window.onload = initialize;
 
 searchBtn.addEventListener("click", searchFunc);
+
+
+  function initialize() {
+    console.log('Map Initialized')
+    geocoder = new google.maps.Geocoder();
+    let latlng = new google.maps.LatLng(-34.397, 150.644);
+    let mapOptions = {
+      zoom: 8,
+      center: latlng
+    }
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+  }
+
+  function codeAddress(address) {
+ 
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+       let marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+            
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      } 
+    });
+  }
 
 //activates search button
 function searchFunc(){
     if (searchBtn){
         fetchDataEvents(cityInput.value)
         setStorage()
+        
     } cityInput.value=""
+    initialize()
 }
 
 //fetches API events from ticketmaster and appends cards dynamically
@@ -39,52 +74,20 @@ fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=["+value+"]&si
 
             eventContainer.appendChild(cardObject)
 
-             let button;
-             button.forEach(button)
+            
         eventContainer.addEventListener("click", function(e){
            eventInfoDiv.innerHTML = ""
             if(e.target.tagName==="BUTTON"){
                 const button = e.target;
                 if(button.className === "cardBtn"){
-
-                    
-                    eventInfoDiv.innerHTML = `<p>${address}</p>`
-               
-              
+                    codeAddress(button.value)
+                    eventInfoDiv.innerHTML = `<p>${button.value}</p>`
                 }
             }
         })
-        
-
-
-    
         })
     });
 }
-//made card clickable *only blue part*
-// function addTopDiv(){
-//     eventContainer.addEventListener("click", function(e){ 
-        
-//         if(e.target.tagName==="DIV"){
-//             const div = e.target;
-//                 if(div.className==="card"){
-//                    // eventInfo();
-//                 }
-//                 }
-//             });
-          
-            //this appends the child for cardInfo *need to add link to buy ticket and google maps API*
-        //function eventInfo(){
-            
-            
-//             let cardInfo = document.createElement("div")
-//             cardInfo.className="cardInfoStyle"
-//             eventInfoDiv.appendChild(cardInfo)
-//             //}
-//             eventInfoDiv.innerHTML=`<h5>${event.name}</h5><img class="image" src=${event.images[0].url}><p>${date}</p><span>${address}</span>`
-// }
-
-
 
 //function for setting storage
 let cityArr=[]
@@ -116,96 +119,3 @@ historyItems.addEventListener("click", function(e){
 })
 
 
-
-// let cityInput = document.getElementById("cityInput");
-// let searchBtn = document.getElementById("searchBtn");
-// let cityName = document.querySelector(".cityName");
-// let eventContainer=document.getElementById("event-container")
-// let cardBtn = document.querySelectorAll("cardButton")
-// searchBtn.addEventListener("click", searchFunc);
-
-// function searchFunc(){
-//     if (searchBtn){
-        
-//         fetchDataEvents(cityInput.value)
-//         //fetchDataWeather(cityInput.value)
-//         //setStorage()
-         
-//     }cityInput.value=""
-    
-
-// }
-
-// function fetchDataEvents(value) {
-//     fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=['" + value + "']&size=30&sort=date,asc&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94", {
-//         method: 'GET',
-//     })
-//         .then((res) => res.json())
-//         .then((data) => {
-//             cityName.innerHTML = data._embedded.events[0]._embedded.venues[0].city.name
-
-//             let events= data._embedded.events;
-//             events.forEach(event => {
-//                 console.log(event);
-//                 let cardObject = document.createElement('div');
-//                 cardObject.className = 'card';
-                
-//                let address =`${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode}`
-//                let date= `${event.dates.start.localDate}, ${event.dates.start.localTime}`
-            
-//                 cardObject.innerHTML=`<h6>${event.name}</h6><img style="height:60px; object-fit:contain;" src=${event.images[0].url}><p>${date}</p><span>${address}</span>` ;
-//                 eventContainer.appendChild(cardObject);
-            
-//                     let cardBtn = document.createElement('button');
-//                     cardBtn.className = 'cardButton';
-//                     cardBtn.value = address;
-//                     cardObject.appendChild(cardBtn);
-//                     console.log(cardBtn.value);                  
-//                 })
-                
-//                 //fetchMap()
-//             });
-// }
-
-// function fetchDataWeather(value){
-
-// }
-
-// function setStorage(){
-
-// }
-
-// fetch("https://app.ticketmaster.com/discovery/v2/events.json?size=31&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94")
-//     .then((res)=>res.json())
-//     .then(console.log)
-
-    // fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=charlotte&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94")
-    // .then((res)=>res.json())
-    // .then(console.log)
-
-// let cardObject
-
-//     function fetchDataEvents(value) {
-     
-//         fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=[" + value + "]&size=30&sort=date,desc&apikey=GC2GWOqVAojsGdOJA1N1FM1RbT4Hzc94", {
-//             method: 'GET',
-//         })
-//             .then((res) => res.json())
-//             .then((data) => {
-//                 cityName.innerHTML = data._embedded.events[0]._embedded.venues[0].city.name
-
-//                 let events= data._embedded.events;
-//                 events.forEach(event => {
-//                     console.log(event);
-//                     cardObject = document.createElement('div');
-                    
-                    
-//                     cardObject.className='card';
-//                     cardObject.innerHTML = event.name;
-//                     eventContainer.appendChild(cardObject);
-                  
-                   
-//                 });
-
-//             })
-//     }
