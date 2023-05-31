@@ -9,12 +9,10 @@ let eventInfoDiv = document.querySelector(".eventInfoDiv");
 let button = document.querySelectorAll("button")
 let geocoder;
 let map;
-
+let marker= null;
 window.initMap = initialize;
-//window.onload = initialize;
 
 searchBtn.addEventListener("click", searchFunc);
-
 
   function initialize() {
     console.log('Map Initialized')
@@ -28,14 +26,15 @@ searchBtn.addEventListener("click", searchFunc);
   }
 
   function codeAddress(address) {
- 
-    geocoder.geocode( { 'address': address}, function(results, status) {
+ if (marker){
+    marker.setMap(null)  //clears the existing marker from the map
+ }
+    geocoder.geocode({ 'address': address}, function(results, status) {
       if (status == 'OK') {
         map.setCenter(results[0].geometry.location);
-       let marker = new google.maps.Marker({
+       marker = new google.maps.Marker({
             map: map,
-            position: results[0].geometry.location
-            
+            position: results[0].geometry.location       
         });
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
@@ -48,9 +47,8 @@ function searchFunc(){
     if (searchBtn){
         fetchDataEvents(cityInput.value)
         setStorage()
-        
-    } cityInput.value=""
-    initialize()
+        initialize()
+    } cityInput.value=""   
 }
 
 //fetches API events from ticketmaster and appends cards dynamically
@@ -73,8 +71,7 @@ fetch("https://app.ticketmaster.com/discovery/v2/events.json?city=["+value+"]&si
             cardObject.innerHTML= `<h5>${event.name}</h5><img class="image" src=${event.images[0].url}><p>${date}</p><p>${address}</p><button class="cardBtn" value="${address}">See on Map</button>`
 
             eventContainer.appendChild(cardObject)
-
-            
+     
         eventContainer.addEventListener("click", function(e){
            eventInfoDiv.innerHTML = ""
             if(e.target.tagName==="BUTTON"){
